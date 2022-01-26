@@ -1,0 +1,1 @@
+//Banco de dados SQL utilizando como sugestão Firebase para não precisar instalar nada.
