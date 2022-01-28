@@ -26,6 +26,7 @@ app.use(
 });
 
 
+
 app.listen(10000, () => {
     console.log('API Gateway running!');
 });
