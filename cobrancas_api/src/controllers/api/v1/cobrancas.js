@@ -2,7 +2,7 @@ const firebasedb = require('firebase/firestore')
 const db = require('../../../models/index')
 const axios = require('axios')
 const estados = require('./estados.json')
-
+const gerarRelatorio =require('./relatorio')
 
 class CobrancasController {
     async postCobranca(req, res) {
@@ -113,23 +113,19 @@ class CobrancasController {
                     }
                 })
                 .then(async (response) => {
-                    const cobrancas = firebasedb.collection(db, 'cobrancas')
+                    
                     let query = []
                     for (let i in response.data.resultados.data) {
-                        query = firebasedb.query(cobrancas, firebasedb.where("cpf", "==", response.data.resultados.data[i].cpf))
-                        const querySnapshot = await firebasedb.getDocs(query);
-                        querySnapshot.forEach((doc) => {
-                            totalPorEstado[estado] += doc.data().valor
-                        })
+                        const cobrancas = firebasedb.collection(db, 'cobrancas')
+                        totalPorEstado[estado] = await gerarRelatorio(cobrancas, response.data.resultados.data[i].cpf)
                     }
 
 
                     res.statusCode = 200
-                    res.send({
-                        resultados: {
-                            data: busca
-                        }
-                    })
+                    res.send(totalPorEstado)
+                })
+                .catch((err)=>{
+                    console.log(err.response.status)
                 })
         }
 
