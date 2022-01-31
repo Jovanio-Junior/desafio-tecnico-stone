@@ -1,6 +1,5 @@
 const express = require('express')
 var logger = require('morgan');
-const knex = require('./src/config/knex/knex')
 const routes = require('./src/routes/index')
 const middlewares = require('./src/config/middleware')
 
@@ -17,7 +16,7 @@ app.get('/clientes', (req, res) => {
 })
 
 
-app.listen(9000, () => {
+app.listen(9001, () => {
     console.log("clientes")
 })
 
