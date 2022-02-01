@@ -78,8 +78,7 @@ class CobrancasController {
 
             }
             if (req.query.valor) {
-                let aux = req.query.valor
-                query = firebasedb.query(query, firebasedb.where("valor", "==", aux.toString()))
+                query = firebasedb.query(query, firebasedb.where("valor", "==", req.query.valor))
             }
             if (req.query.dataVencimento) {
                 query = firebasedb.query(query, firebasedb.where("valor", "==", req.query.dataVencimento))
