@@ -1,0 +1,314 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "0.0.1",
+        "title": "clientes API",
+        "description": "Api clientes"
+    },
+    "servers": [{
+        "url": "http://localhost:9000",
+        "description": "Servidor Localhost"
+    }],
+    "security": [
+
+    ],
+    "tags": [{
+            "name": "cadastro - V1",
+            "description": "Rotas para o cadastro de cliente - V1"
+        },
+        {
+            "name": "consulta - V1",
+            "description": "Rotas para o consulta de cliente - V1"
+        }
+
+    ],
+    "paths": {
+        "/clientes/consulta": {
+            "post": {
+                "summary": "Get Lista de clientes",
+                "operationId": "clientes - V1_Index",
+                "tags": [
+                    "clientes - V1"
+                ],
+                "description": "Retorna lista de clientes de acordo com os parametros de busca",
+                "parameters": [{
+                        "name": "cpf",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Filtro de Busca"
+                        },
+                        "description": "Filtro de Busca"
+                    },
+                    {
+                        "name": "nome",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "Float",
+                            "description": "Filtro de Busca por nome"
+                        },
+                        "description": "Filtro de Busca por nome"
+                    },
+                    {
+                        "name": "estado",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Parametro para buscar por data"
+                        },
+                        "description": "Parametro para buscar por data"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resultados": {
+                                            "type": "array",
+                                            "data": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "cpf": {
+                                                        "type": "string",
+                                                        "description": "cpf do cliente"
+                                                    },
+                                                    "nome": {
+                                                        "type": "integer",
+                                                        "description": "nome do cliente"
+                                                    },
+                                                    "estado": {
+                                                        "type": "string",
+                                                        "description": "estado do cliente"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "O CPF não foi informado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string",
+                                            "description": "Mensagem de erro"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "BearerAuth": [
+
+                    ]
+                }]
+            }
+        },
+        "/clientes/cadastro/": {
+            "post": {
+                "summary": "POST Cobrança",
+                "operationId": "cobranças - V1_Create",
+                "tags": [
+                    "cobranças - V1"
+                ],
+                "description": "Cria Cobrança",
+                "requestBody": {
+                    "required": true,
+                    "description": "Formulário Cobrança",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "estado": {
+                                        "type": "string",
+                                        "description": "estado do cliente"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "description": "Cpf do dono da Cobrança"
+                                    },
+                                    "nome": {
+                                        "type": "integer",
+                                        "description": "nome do cliente"
+                                    }
+                                },
+                                "required": [
+                                    "estado",
+                                    "cpf",
+                                    "nome"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "string",
+                                            "description": "mensagem"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "CPF invalido.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string",
+                                            "description": "mensagem"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "campo(s) não foram informados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string",
+                                            "description": "mensagem"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                },
+                "security": []
+            }
+        },
+        "/clientes/consulta": {
+            "get": {
+                "summary": "Get Lista de clientes por estado",
+                "operationId": "clientes - V1_Index",
+                "tags": [
+                    "clientes - V1"
+                ],
+                "description": "Retorna lista de clientes de acordo com os parametros de busca",
+                "parameters": [{
+                        "name": "estado",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Filtro de Busca"
+                        },
+                        "description": "Filtro de Busca"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "initial": 1,
+                            "description": "pagination"
+                        },
+                        "description": "pagination"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20,
+                            "description": "pagination"
+                        },
+                        "description": "pagination"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resultados": {
+                                            "type": "array",
+                                            "data": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "cpf": {
+                                                        "type": "string",
+                                                        "description": "cpf da cliente"
+                                                    },
+                                                    "nome": {
+                                                        "type": "string",
+                                                        "description": "nome do cliente"
+                                                    },
+                                                    "estado": {
+                                                        "type": "string",
+                                                        "description": "estado do cliente"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Estado não informado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string",
+                                            "description": "Mensagem de erro"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "BearerAuth": [
+
+                    ]
+                }]
+            }
+        }
+    },
+    "components": {}
+}

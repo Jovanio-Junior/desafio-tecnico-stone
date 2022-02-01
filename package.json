@@ -4,7 +4,7 @@
   "description": "redirecionar requisições para os microsserviços",
   "main": "index.js",
   "scripts": {
-    "start":"nodemon index.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Jovanio-Junior/desafio-tecnico-stone#readme",
   "dependencies": {
+    "axios": "^0.25.0",
     "express": "^4.17.2",
     "express-http-proxy": "^1.6.3",
     "morgan": "^1.10.0",

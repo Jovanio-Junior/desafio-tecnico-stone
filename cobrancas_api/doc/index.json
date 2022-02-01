@@ -1,0 +1,216 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "0.0.1",
+        "title": "cobrancas API",
+        "description": "Api cobrancas"
+    },
+    "servers": [{
+        "url": "http://localhost:9001",
+        "description": "Servidor Localhost"
+    }],
+    "security": [
+
+    ],
+    "tags": [{
+            "name": "cadastro - V1",
+            "description": "Rotas para o cadastro de cobranca - V1"
+        },
+        {
+            "name": "consulta - V1",
+            "description": "Rotas para o consulta de cobranca - V1"
+        }
+
+    ],
+    "paths": {
+        "/cobranca/consulta": {
+            "get": {
+                "summary": "Get Lista de cobrancas",
+                "operationId": "cobrancas - V1_Index",
+                "tags": [
+                    "cobrancas - V1"
+                ],
+                "description": "Retorna lista de cobrancas de acordo com os parametros de busca",
+                "parameters": [{
+                        "name": "cpf",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Filtro de Busca"
+                        },
+                        "description": "Filtro de Busca"
+                    },
+                    {
+                        "name": "valor",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "Float",
+                            "description": "Filtro de Busca por valor"
+                        },
+                        "description": "Filtro de Busca por valor"
+                    },
+                    {
+                        "name": "dataVencimento",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Parametro para buscar por data"
+                        },
+                        "description": "Parametro para buscar por data"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "resultados": {
+                                            "type": "array",
+                                            "data": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "cpf": {
+                                                        "type": "string",
+                                                        "description": "cpf da cobrança"
+                                                    },
+                                                    "valor": {
+                                                        "type": "integer",
+                                                        "description": "valor da cobrança"
+                                                    },
+                                                    "dataVencimento": {
+                                                        "type": "string",
+                                                        "description": "data de vencimento da cobrança"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Pelo menos um parametro deve ser informado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string",
+                                            "description": "Mensagem de erro"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{
+                    "BearerAuth": [
+
+                    ]
+                }]
+            }
+        },
+        "/cobranca/cadastro/": {
+            "post": {
+                "summary": "POST Cobrança",
+                "operationId": "cobranças - V1_Create",
+                "tags": [
+                    "cobranças - V1"
+                ],
+                "description": "Cria Cobrança",
+                "requestBody": {
+                    "required": true,
+                    "description": "Formulário Cobrança",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "dataVencimento": {
+                                        "type": "string",
+                                        "description": "Data Vencimento da Cobrança"
+                                    },
+                                    "cpf": {
+                                        "type": "string",
+                                        "description": "Cpf do dono da Cobrança"
+                                    },
+                                    "valor": {
+                                        "type": "integer",
+                                        "description": "valor da cobrança"
+                                    }
+                                },
+                                "required": [
+                                    "dataVencimento",
+                                    "cpf",
+                                    "valor"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "string",
+                                            "description": "mensagem"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "erro Data para cobrança invalida",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string",
+                                            "description": "mensagem"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "campo(s) não foram informados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "err": {
+                                            "type": "string",
+                                            "description": "mensagem"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                },
+                "security": []
+            }
+        }
+    },
+    "components": {}
+}

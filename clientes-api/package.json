@@ -16,6 +16,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "firebase": "^9.6.4",
+    "gerador-nome": "^0.0.5",
+    "gerador-validador-cpf": "^5.0.2",
     "knex": "^1.0.1",
     "knex-paginate": "^3.0.0",
     "morgan": "^1.10.0",

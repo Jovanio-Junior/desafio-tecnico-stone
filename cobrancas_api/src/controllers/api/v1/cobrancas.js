@@ -2,7 +2,7 @@ const firebasedb = require('firebase/firestore')
 const db = require('../../../models/index')
 const axios = require('axios')
 const estados = require('./estados.json')
-const gerarRelatorio =require('./relatorio')
+const gerarRelatorio = require('./relatorio')
 
 class CobrancasController {
     async postCobranca(req, res) {
@@ -67,19 +67,22 @@ class CobrancasController {
     }
 
     async getCobranca(req, res) {
-        let body = req.body
-        if (body) {
+
+        if (req.query.cpf || req.query.valor || req.query.dataVencimento) {
 
             const cobrancas = firebasedb.collection(db, 'cobrancas')
-            let query = []
-            if (body.cpf) {
-                query = firebasedb.query(cobrancas, firebasedb.where("cpf", "==", body.cpf))
+
+            let query
+            if (req.query.cpf) {
+                query = firebasedb.query(cobrancas, firebasedb.where("cpf", "==", req.query.cpf))
+
             }
-            if (body.valor) {
-                query = firebasedb.query(query, firebasedb.where("valor", "==", body.valor))
+            if (req.query.valor) {
+                let aux = req.query.valor
+                query = firebasedb.query(query, firebasedb.where("valor", "==", aux.toString()))
             }
-            if (body.dataVencimento) {
-                query = firebasedb.query(query, firebasedb.where("valor", "==", body.dataVencimento))
+            if (req.query.dataVencimento) {
+                query = firebasedb.query(query, firebasedb.where("valor", "==", req.query.dataVencimento))
             }
             const querySnapshot = await firebasedb.getDocs(query);
             let busca = []
@@ -104,31 +107,32 @@ class CobrancasController {
     async mapReduce(req, res) {
         let totalPorEstado = []
         for (var estado in estados.UF) {
-            totalPorEstado.push(0)
-            await axios.get('http://localhost:9000/clientes/consulta', {
-                    params: {
-                        estado: estados.UF[estado].nome,
-                        page: 1,
-                        perPage: 20000
-                    }
-                })
+            await axios.get(`http://localhost:9000/clientes/consulta/${estados.UF[estado].nome}/${1}/${20000}`)
                 .then(async (response) => {
-                    
                     let query = []
+                    let soma = 0
                     for (let i in response.data.resultados.data) {
+
                         const cobrancas = firebasedb.collection(db, 'cobrancas')
-                        totalPorEstado[estado] = await gerarRelatorio(cobrancas, response.data.resultados.data[i].cpf)
+                        soma = soma + await gerarRelatorio(cobrancas, response.data.resultados.data[i].cpf)
+
                     }
+                    totalPorEstado.push({
+                        Estado: `${estados.UF[estado].nome}`,
+                        ValorCobranca: soma
+                    })
 
-
-                    res.statusCode = 200
-                    res.send(totalPorEstado)
                 })
-                .catch((err)=>{
-                    console.log(err.response.status)
+                .catch((err) => {
+                    totalPorEstado.push({
+                        Estado: `${estados.UF[estado].nome}`,
+                        ValorCobranca: 0,
+                        OBS: "Não ha cobranças no estado."
+                    })
                 })
         }
-
+        res.statusCode = 200
+        res.send(totalPorEstado)
 
     }
 }

@@ -9,4 +9,7 @@ module.exports = {
   client: 'pg',
   connection: config,
   searchPath: ['knex', 'public'],
+  seeds: {
+    directory: './seeds'
+  }
 };

@@ -17,7 +17,7 @@ app.get('/clientes', (req, res) => {
 
 
 app.listen(9001, () => {
-    console.log("clientes")
+    console.log("Api de Cobranças rodando na porta 9001")
 })
 
 module.exports = app

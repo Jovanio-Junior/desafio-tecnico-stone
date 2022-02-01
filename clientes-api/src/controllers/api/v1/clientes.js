@@ -135,9 +135,7 @@ class ClientesController {
                         resultados: data
                     })
                 })
-                .catch((err) => {
-
-                })
+                .catch((err) => {})
         } else {
             res.statusCode = 400
             res.send({
